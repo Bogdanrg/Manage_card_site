@@ -20,7 +20,7 @@ class Card(models.Model):
     status = models.BooleanField()
 
     def __str__(self):
-        return self.series
+        return str(self.number)
 
     def get_absolute_url(self):
         return reverse('card', kwargs={'card_id': self.pk})
@@ -40,3 +40,12 @@ class Purchase(models.Model):
     price = models.IntegerField()
     buy_date = models.DateTimeField(auto_now=True)
     card_id = models.ForeignKey('Card', on_delete=models.PROTECT)
+
+#for i in range(10):
+...     #dict={}
+...     #dict['series'] = 'third'
+...     #dict['number'] = randrange(10101010, 98989898)
+...     #dict['count'] = randrange(10, 500)
+...     #dict['status'] = True
+...     #Card.objects.create(**dict)
+#

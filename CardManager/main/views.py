@@ -1,11 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 from .models import *
 from django.db.models import Q
+from .forms import *
 
 
 class CardListView(ListView):
+    paginate_by = 5
     model = Card
     template_name = 'main/list.html'
     context_object_name = 'cards'
@@ -37,6 +40,7 @@ class CardDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Card - {context["card"].pk}'
         context['card_id'] = context['card'].pk
+        context['purchases'] = context['card'].purchase_set.all()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -52,3 +56,14 @@ class CardDetailView(DetailView):
 def card_delete(request, card_id):
     Card.objects.filter(pk=card_id).delete()
     return redirect('home')
+
+
+class ProductView(CreateView):
+    form_class = ProductForm
+    template_name = 'main/product.html'
+    success_url = reverse_lazy('home')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Purchase'
+        return context

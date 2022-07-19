@@ -16,8 +16,8 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">Seria : {{card.series}}</li>
         <li class="list-group-item">Number : {{card.number}}</li>
-        <li class="list-group-item">Release_date : {{card.release_date}}</li>
-        <li class="list-group-item">Expiration_date : {{card.expiration_date}}</li>
+        <li class="list-group-item">Release date : {{card.release_date}}</li>
+        <li class="list-group-item">Expiration date : {{card.expiration_date}}</li>
         <li class="list-group-item">Current Count : {{card.count}}</li>
         <li class="list-group-item">Current status : {{card.status}}</li>
       </ul>
@@ -50,7 +50,18 @@
         </div>
     </div>
     <div class="col">
-      History
+        <br>
+        <div class="container">
+        {% for i in purchases %}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>History</strong></li>
+            <li class="list-group-item">Title : {{ i.product }}</li>
+            <li class="list-group-item">Price : {{ i.price }}</li>
+            <li class="list-group-item">Date : {{i.buy_date}}</li>
+            <hr>
+        </ul>
+        {% endfor %}
+        </div>
     </div>
   </div>
 </div>

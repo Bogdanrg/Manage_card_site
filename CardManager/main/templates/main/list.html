@@ -21,7 +21,11 @@
     <div class="container">
         <a href="{% url 'home' %}"><button type="submit" class="btn btn-primary">Reset filters</button></a>
     </div>
-
+<br>
+<br>
+<div class="container">
+    <button class="btn btn-outline-dark"><a href="{% url 'product' %}">Create a Purchase</a></button>
+</div>
 <br>
 <br>
 {% if not cards %}
@@ -53,9 +57,44 @@
                     <button class="btn btn-primary">Manage</button></a></li>
             </ul>
         </div>
-<br>
+
     {% endif %}
+<br>
+<br>
+
 {% endfor %}
+{% endif %}
+{% if page_obj.has_other_pages %}
+
+{% if page_obj.has_previous %}
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+         <a class="page-link" href="?page={{page_obj.previous_page_number}}">&lt;</a>
+     </li>
+    </ul>
+{% endif %}
+<nav>
+    <ul class="pagination justify-content-center">
+        {% for p in paginator.page_range %}
+        {% if page_obj.number == p %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">{{p}}</a>
+            </li>
+        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{p}}">{{p}}</a>
+            </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{% if page_obj.has_next %}
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" href="?page={{page_obj.next_page_number}}">&gt;</a>
+        </li>
+    </ul>
+{% endif %}
 {% endif %}
 </body>
 </html>
