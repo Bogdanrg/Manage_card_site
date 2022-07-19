@@ -3,7 +3,7 @@ from django.urls import reverse
 import datetime
 
 
-def expiration_func():
+def expiration_six_month():
     date_now = datetime.date.today()
     month = date_now.month
     date_expiration = date_now.replace(month=month+3)
@@ -14,7 +14,7 @@ class Card(models.Model):
     series = models.CharField(max_length=30)
     number = models.IntegerField()
     release_date = models.DateField(default=datetime.date.today)
-    expiration_date = models.DateField(default=expiration_func)
+    expiration_date = models.DateField(default=expiration_six_month)
     date_of_use = models.DateTimeField(auto_now=True)
     count = models.IntegerField(null=True)
     status = models.BooleanField()
@@ -24,6 +24,9 @@ class Card(models.Model):
 
     def get_absolute_url(self):
         return reverse('card', kwargs={'card_id': self.pk})
+
+    def get_delete_absolute_url(self):
+        return reverse('delete', kwargs={'card_id': self.pk})
 
 
 class Purchase(models.Model):

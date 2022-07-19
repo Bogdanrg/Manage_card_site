@@ -3,8 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
-
+<div class="container">
+    <a href="{% url 'home' %}"><button type="submit" class="btn btn-primary"> < back </button></a>
+</div>
+  <div class="container">
+   <div class="row">
+    <div class="col-6">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Seria : {{card.series}}</li>
+        <li class="list-group-item">Number : {{card.number}}</li>
+        <li class="list-group-item">Release_date : {{card.release_date}}</li>
+        <li class="list-group-item">Expiration_date : {{card.expiration_date}}</li>
+        <li class="list-group-item">Current Count : {{card.count}}</li>
+        <li class="list-group-item">Current status : {{card.status}}</li>
+      </ul>
+        {% if not card.status %}
+        <div class="container">
+            <form action="{{ card.get_absolute_url }}" method="post">
+                <div class="mb-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Activate</button>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="container">
+            <form action="{{ card.get_absolute_url }}" method="post">
+                <div class="mb-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Diactivate</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        <div class="container">
+            <form action="{{ card.get_delete_absolute_url }}" method="post">
+                <div class="mb-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Delete card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col">
+      History
+    </div>
+  </div>
+</div>
 </body>
 </html>

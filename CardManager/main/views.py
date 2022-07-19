@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from .models import *
 from django.db.models import Q
@@ -13,7 +13,7 @@ class CardListView(ListView):
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Список карт'
+        context['title'] = 'Cards'
         return context
 
     def get_queryset(self):
@@ -35,5 +35,20 @@ class CardDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = context['card'].status
+        context['title'] = f'Card - {context["card"].pk}'
+        context['card_id'] = context['card'].pk
         return context
+
+    def post(self, request, *args, **kwargs):
+        card_id = self.kwargs.get('card_id')
+        card = Card.objects.get(pk=card_id)
+        if card.status:
+            Card.objects.filter(pk=card_id).update(status=False)
+        else:
+            Card.objects.filter(pk=card_id).update(status=True)
+        return redirect('card', card_id=card_id)
+
+
+def card_delete(request, card_id):
+    Card.objects.filter(pk=card_id).delete()
+    return redirect('home')
