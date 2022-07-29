@@ -39,7 +39,7 @@ class Purchase(models.Model):
     product = models.CharField(max_length=30, choices=PRODUCTS_LIST)
     price = models.IntegerField()
     buy_date = models.DateTimeField(auto_now=True)
-    card_id = models.ForeignKey('Card', on_delete=models.PROTECT)
+    card_id = models.ForeignKey('Card', on_delete=models.CASCADE)
 
 #for i in range(10):
 ...     #dict={}
