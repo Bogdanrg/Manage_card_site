@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -20,6 +22,10 @@ class CardListView(ListView):
         return context
 
     def get_queryset(self):
+        cards = Card.objects.filter(expiration_date__lt=datetime.date.today())
+        for card in cards:
+            card.status = False
+            card.save()
         query = self.request.GET.get('q')
         if query:
             object_list = Card.objects.filter(

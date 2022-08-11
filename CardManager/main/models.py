@@ -6,7 +6,7 @@ import datetime
 def expiration_six_month():
     date_now = datetime.date.today()
     month = date_now.month
-    date_expiration = date_now.replace(month=month+3)
+    date_expiration = date_now.replace(month=month-1)
     return date_expiration
 
 
