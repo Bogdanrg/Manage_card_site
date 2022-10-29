@@ -1,4 +1,5 @@
 from django.db import models, connection
+from django.utils import timezone
 from django.urls import reverse
 import datetime
 from random import randrange
@@ -13,11 +14,17 @@ def expiration_date_func(days):
 class Card(models.Model):
     series = models.CharField(max_length=30)
     number = models.IntegerField()
-    release_date = models.DateTimeField(default=datetime.datetime.now())
+    release_date = models.DateTimeField()
     expiration_date = models.DateTimeField()
-    date_of_use = models.DateTimeField(auto_now=True, null=True)
+    date_of_use = models.DateTimeField(null=True)
     count = models.IntegerField(null=True)
     status = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.release_date = timezone.now()
+        self.date_of_use = timezone.now()
+        return super(Card, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.number)
