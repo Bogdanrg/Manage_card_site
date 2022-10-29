@@ -15,7 +15,7 @@ class Card(models.Model):
     number = models.IntegerField()
     release_date = models.DateTimeField(default=datetime.datetime.now())
     expiration_date = models.DateTimeField()
-    date_of_use = models.DateTimeField(auto_now=True)
+    date_of_use = models.DateTimeField(auto_now=True, null=True)
     count = models.IntegerField(null=True)
     status = models.BooleanField()
 
@@ -32,9 +32,8 @@ class Card(models.Model):
 def create_cards():
     for obj in range(10):
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO main_card(series, number, release_date, expiration_date, date_of_use, count,"
-                           " status) VALUES('first', %s,'2022-08-19 00:00:00' , %s, '2022-08-19 00:00:00', %s, 1)",
-                           [randrange(10101010, 98989898), expiration_date_func(days=365), 300])
+            cursor.execute("insert into main_card(series, number, expiration_date, count, status)"
+                           "values('BlackSeria', 781232312899, '2026-10-25 14:30:59', 100, 1)")
 
 
 class Purchase(models.Model):
