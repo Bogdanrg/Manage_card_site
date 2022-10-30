@@ -6,7 +6,7 @@ from random import randrange
 
 
 def expiration_date_func(days):
-    date_now = datetime.datetime.now()
+    date_now = timezone.now()
     expiration_date = date_now + datetime.timedelta(days=days)
     return expiration_date
 
@@ -23,7 +23,8 @@ class Card(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.release_date = timezone.now()
-        self.date_of_use = timezone.now()
+        else:
+            self.date_of_use = timezone.now()
         return super(Card, self).save(*args, **kwargs)
 
     def __str__(self):
