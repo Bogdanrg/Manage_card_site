@@ -36,6 +36,11 @@ class Card(models.Model):
     def get_delete_absolute_url(self):
         return reverse('delete', kwargs={'card_id': self.pk})
 
+    def is_active_card(self):
+        if self.expiration_date < timezone.now():
+            return False
+        return True
+
 
 def create_cards():
     for obj in range(10):

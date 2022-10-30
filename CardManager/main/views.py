@@ -64,12 +64,14 @@ def card_delete(request, card_id):
     return redirect('home')
 
 
-class ProductView(CreateView):
-    form_class = ProductForm
-    template_name = 'main/product.html'
-    success_url = reverse_lazy('home')
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Purchase'
-        return context
+def create_purchase(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            card = Card.objects.get(pk=request.POST.get('card_id'))
+            card.save()
+            form.save()
+        else:
+            form = ProductForm()
+    return HttpResponse('domne')
+
