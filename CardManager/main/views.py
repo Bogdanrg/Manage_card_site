@@ -65,13 +65,16 @@ def card_delete(request, card_id):
 
 
 def create_purchase(request):
+    context = {'form': ProductForm}
     if request.method == 'POST':
+        card_id = request.POST.get('card_id')
         form = ProductForm(request.POST)
         if form.is_valid():
-            card = Card.objects.get(pk=request.POST.get('card_id'))
+            card = Card.objects.get(pk=card_id)
+            Purchase.objects.create(**form.cleaned_data)
             card.save()
-            form.save()
+            return redirect('card', card_id=card_id)
         else:
             form = ProductForm()
-    return HttpResponse('domne')
+    return render(request, template_name='main/product.html', context=context)
 

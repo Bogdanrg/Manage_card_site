@@ -5,7 +5,7 @@ import datetime
 from random import randrange
 
 
-def expiration_date_func(days):
+def expiration_date_func(days=None):
     date_now = timezone.now()
     expiration_date = date_now + datetime.timedelta(days=days)
     return expiration_date
@@ -14,7 +14,7 @@ def expiration_date_func(days):
 class Card(models.Model):
     series = models.CharField(max_length=30)
     number = models.IntegerField()
-    release_date = models.DateTimeField()
+    release_date = models.DateTimeField(default=timezone.now(), blank=True)
     expiration_date = models.DateTimeField()
     date_of_use = models.DateTimeField(null=True)
     count = models.IntegerField(null=True)
@@ -45,8 +45,8 @@ class Card(models.Model):
 def create_cards():
     for obj in range(10):
         with connection.cursor() as cursor:
-            cursor.execute("insert into main_card(series, number, expiration_date, count, status)"
-                           "values('BlackSeria', 781232312899, '2026-10-25 14:30:59', 100, 1)")
+            cursor.execute("insert into main_card(series, number,release_date ,expiration_date, count, status)"
+                           "values('BlackSeria', %s, %s,'2026-10-25 14:30:59', 100, 1)", ( randrange(121489654711, 999999999999), f'{timezone.now()}' ))
 
 
 class Purchase(models.Model):
